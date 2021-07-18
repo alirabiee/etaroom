@@ -37,5 +37,10 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
+shadowJar {
+    zip64 true
+    mergeServiceFiles()
+}
+
 
 
