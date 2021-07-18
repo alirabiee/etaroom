@@ -23,7 +23,7 @@ class CreateRoomForm extends React.Component {
 
 	render() {
         return (
-            <div className="container-fluid">
+            <form className="container-fluid">
                 <div className="row">
                     <div className="col-md-12"><h1>Create a room</h1></div>
                 </div>
@@ -36,9 +36,9 @@ class CreateRoomForm extends React.Component {
                     <div className="col-md-10"><input id="password" type="password" value={this.state.password} onChange={event => this.setState({password: event.target.value})} /></div>
                 </div>
                 <div className="row">
-                    <div className="col-md-12"><button onClick={this.createRoom}>Create room</button></div>
+                    <div className="col-md-12"><button type="submit" onClick={this.createRoom}>Create room</button></div>
                 </div>
-            </div>
+            </form>
         )
   }
 }

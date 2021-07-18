@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import CreateRoomForm from './CreateRoomForm'
-import VotingForm from './VotingForm'
 import Room from './Room'
 
 const hasLoggedIn = () => location.href.indexOf('/join/') > 0
@@ -14,16 +13,13 @@ export default function App() {
   let page = []
 
   if(appState.loggedIn)
-    page.push(
-      <Room roomId={appState.roomId} />,
-      <VotingForm roomId={appState.roomId} />
-    )
+    page.push(<Room key="room" roomId={appState.roomId} isAdmin={appState.admin} password={appState.password} />)
   else
-    page.push(<CreateRoomForm onSubmit={onCreateRoom} />)
+    page.push(<CreateRoomForm key="room-creation-form" onSubmit={onCreateRoom} />)
 
   return (
-    <div>
+    <>
       {page}
-    </div>
+    </>
   )
 }

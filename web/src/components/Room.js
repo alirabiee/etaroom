@@ -1,10 +1,13 @@
 import React from 'react'
 import VotesGraph from './VotesGraph'
 import PropTypes from 'prop-types'
-import { getRoom } from './API'
+import { getRoom, getParticipant } from './API'
+import VotingForm from './VotingForm'
+import VotingConcludedMessage from './VotingConcludedMessage'
+import ControlPanel from './ControlPanel'
 
 class Room extends React.Component {
-    state = {id: '', name: '', participants:[]}
+    state = { id: '', name: '', participants: [], myVote: '', participantId: '' }
 
     constructor(props) {
         super(props)
@@ -12,30 +15,62 @@ class Room extends React.Component {
         this.refreshRoom()
     }
 
-    componentWillUnmount() {
-        clearInterval(this.state.internalId)
+    static get propTypes() {
+        return {
+            roomId: PropTypes.string,
+            password: PropTypes.string,
+            isAdmin: PropTypes.bool
+        };
     }
 
     refreshRoom = () => {
         getRoom(this.props.roomId).then(data => this.setState(data))
+        if(this.state.participantId)
+            getParticipant(this.props.roomId, this.state.participantId).catch(() => this.setState({participantId: '', myVote: ''}))
     }
 
-    static get propTypes() { 
-        return {
-            roomId: PropTypes.string
-        }; 
+    onJoin = (participantId) => {
+        this.setState({participantId})
+        this.refreshRoom()
     }
 
-	render() {
-        return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-12"><h1>{this.state.name}</h1> <a href={'/join/'+this.state.id}>Shareing Link</a></div>
+    onVote = (updatedRoomData, myVote) => {
+        let newState = Object.assign({ myVote }, updatedRoomData);
+        this.setState(newState)
+    }
+
+    onConclude = (updatedRoomData) => {
+        this.setState(updatedRoomData)
+    }
+
+    onRestart = (updatedRoomData) => {
+        let newState = Object.assign({ myVote: '' }, updatedRoomData);
+        this.setState(newState)
+    }
+
+    render() {
+        let page = [
+            (
+                <div key="room-header" className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-12"><h1>{this.state.name} <small><a href={'/join/' + this.state.id}>Link to Join</a></small></h1></div>
+                    </div>
                 </div>
-                <VotesGraph participants={this.state.participants} />
-            </div>
+            ),
+            (<VotesGraph key="graph" participants={this.state.participants} votes={this.state.ballotBox?.votes} />)
+        ]
+        if (this.state.ballotBox?.mode === 'VOTING')
+            page.push(<VotingForm key="voting-form" roomId={this.props.roomId} onSubmit={this.onVote} onJoin={this.onJoin} participantId={this.state.participantId} />)
+        else
+            page.push(<VotingConcludedMessage key="voting-concluded-msg" vote={this.state.myVote} />)
+        if(this.props.isAdmin)
+            page.push([<br key="room-ln"/>,<ControlPanel key="control-panel" roomId={this.props.roomId} password={this.props.password} mode={this.state.ballotBox?.mode} onConclude={this.onConclude} onRestart={this.onRestart} />])
+        return (
+            <>
+                {page}
+            </>
         );
-  }
+    }
 }
 
 export default Room

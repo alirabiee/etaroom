@@ -2,4 +2,4 @@
 
 killall gradlew
 sleep 1
-./gradlew run &
+./gradlew build run &
