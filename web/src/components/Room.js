@@ -25,7 +25,7 @@ class Room extends React.Component {
 
     refreshRoom = () => {
         getRoom(this.props.roomId).then(data => {
-            if(data.ballotBox?.mode !== this.state.ballotBox?.mode)
+            if(data.ballotBox?.mode === 'VOTING' && this.state.ballotBox?.mode === 'CONCLUDED')
                 this.setState(Object.assign({ myVote: '' }, data))
             else
                 this.setState(data)
