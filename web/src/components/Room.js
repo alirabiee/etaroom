@@ -24,7 +24,12 @@ class Room extends React.Component {
     }
 
     refreshRoom = () => {
-        getRoom(this.props.roomId).then(data => this.setState(data))
+        getRoom(this.props.roomId).then(data => {
+            if(data.ballotBox?.mode !== this.state.ballotBox?.mode)
+                this.setState(Object.assign({ myVote: '' }, data))
+            else
+                this.setState(data)
+        })
         if(this.state.participantId)
             getParticipant(this.props.roomId, this.state.participantId).catch(() => this.setState({participantId: '', myVote: ''}))
     }
@@ -35,8 +40,7 @@ class Room extends React.Component {
     }
 
     onVote = (updatedRoomData, myVote) => {
-        let newState = Object.assign({ myVote }, updatedRoomData);
-        this.setState(newState)
+        this.setState(Object.assign({ myVote }, updatedRoomData))
     }
 
     onConclude = (updatedRoomData) => {
@@ -44,8 +48,7 @@ class Room extends React.Component {
     }
 
     onRestart = (updatedRoomData) => {
-        let newState = Object.assign({ myVote: '' }, updatedRoomData);
-        this.setState(newState)
+        this.setState(Object.assign({ myVote: '' }, updatedRoomData))
     }
 
     render() {
