@@ -31,7 +31,7 @@ class ControlPanel extends React.Component {
         if(this.props.mode == 'VOTING')
             button = <button type="button" className="btn btn-default" onClick={this.conclude}>Conclude</button>
         else
-            button = <button type="button" className="btn btn-default" onClick={this.restart}>Restart</button>
+            button = <button type="button" className="btn btn-warning" onClick={this.restart}>Restart</button>
         return (
             <>
                 <div key="room-header" className="container-fluid">

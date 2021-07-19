@@ -49,7 +49,7 @@ class VotingForm extends React.Component {
             return (
                 <form className="container-fluid">
                     <div className="row">
-                        <div className="col-md-12"><label htmlFor="participantName">Your name:&nbsp;</label><input id="participantName" value={this.state.participantName} onChange={event => this.setState({ participantName: event.target.value })} />&nbsp;<button type="submit" onClick={this.join}>Join</button></div>
+                        <div className="col-md-12"><label htmlFor="participantName">Your name:</label><input style={{ marginLeft: '10px', marginRight: '10px' }} id="participantName" value={this.state.participantName} onChange={event => this.setState({ participantName: event.target.value })} /><button type="submit" onClick={this.join}>Join</button></div>
                     </div>
                 </form>
             )
