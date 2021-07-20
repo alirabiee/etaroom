@@ -29,14 +29,14 @@ class ControlPanel extends React.Component {
     render() {
         let button;
         if(this.props.mode == 'VOTING')
-            button = <button type="button" className="btn btn-default" onClick={this.conclude}>Conclude</button>
+            button = <button type="button" className="btn btn-danger" onClick={this.conclude}>Conclude</button>
         else
             button = <button type="button" className="btn btn-warning" onClick={this.restart}>Restart</button>
         return (
             <>
                 <div key="room-header" className="container-fluid">
                     <div className="row">
-                        <div className="col-md-12">
+                        <div className={"col-md-12" + ( this.props.mode == 'VOTING' ? " text-right" : "")}>
                             {button}
                         </div>
                     </div>

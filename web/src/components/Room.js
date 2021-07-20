@@ -26,7 +26,7 @@ class Room extends React.Component {
     refreshRoom = () => {
         getRoom(this.props.roomId).then(data => {
             if(data.ballotBox?.mode === 'VOTING' && this.state.ballotBox?.mode === 'CONCLUDED')
-                this.setState(Object.assign({ myVote: '' }, data))
+                this.setState(Object.assign({ myVote: '', participants: [] }, data))
             else
                 this.setState(data)
         })
@@ -48,7 +48,7 @@ class Room extends React.Component {
     }
 
     onRestart = (updatedRoomData) => {
-        this.setState(Object.assign({ myVote: '' }, updatedRoomData))
+        this.setState(Object.assign({ myVote: '', participants: [] }, updatedRoomData))
     }
 
     render() {
