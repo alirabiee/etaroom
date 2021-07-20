@@ -19,7 +19,8 @@ class ControlPanel extends React.Component {
     }
 
     conclude = () => {
-        concludeRoom(this.props.roomId, this.props.password).then(data => this.props.onConclude(data)).catch(() => alert("Sorry, something went wrong concluding the voting"))
+        if(confirm('Are you sure you want to end the voting?'))
+            concludeRoom(this.props.roomId, this.props.password).then(data => this.props.onConclude(data)).catch(() => alert("Sorry, something went wrong concluding the voting"))
     }
 
     restart = () => {
@@ -36,7 +37,7 @@ class ControlPanel extends React.Component {
             <>
                 <div key="room-header" className="container-fluid">
                     <div className="row">
-                        <div className={"col-md-12" + ( this.props.mode == 'VOTING' ? " text-right" : "")}>
+                        <div className="col-md-12">
                             {button}
                         </div>
                     </div>

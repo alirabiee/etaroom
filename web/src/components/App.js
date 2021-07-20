@@ -18,8 +18,12 @@ export default function App() {
     page.push(<CreateRoomForm key="room-creation-form" onSubmit={onCreateRoom} />)
 
   return (
-    <>
-      {page}
-    </>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-12">
+          {page}
+        </div>
+      </div>
+    </div>
   )
 }
