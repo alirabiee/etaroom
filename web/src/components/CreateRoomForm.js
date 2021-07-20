@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { createRoom } from './API'
+import { v4 as uuidv4 } from 'uuid'
 
 class CreateRoomForm extends React.Component {
-    state={ name: '', password:'' }
+    state={ name: '', password: uuidv4() }
 
     static get propTypes() { 
         return { 
@@ -30,10 +31,6 @@ class CreateRoomForm extends React.Component {
                 <div className="form-group">
                     <label className="col-md-2 control-label" htmlFor="name">Room name:</label>
                     <div className="col-md-10"><input id="name" className="form-control" value={this.state.name} onChange={event => this.setState({name: event.target.value})} /></div>
-                </div>
-                <div className="form-group">
-                    <label className="col-md-2 control-label" htmlFor="password">Password: </label>
-                    <div className="col-md-10"><input id="password" className="form-control" type="password" value={this.state.password} onChange={event => this.setState({password: event.target.value})} /></div>
                 </div>
                 <div className="form-group">
                     <div className="col-md-offset-2 col-md-10"><button type="submit" onClick={this.createRoom}>Create {this.state.name || 'a'} room</button></div>
