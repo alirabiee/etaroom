@@ -7,10 +7,11 @@ import VotingConcludedMessage from './VotingConcludedMessage'
 import ControlPanel from './ControlPanel'
 
 class Room extends React.Component {
-    state = { id: '', name: '', participants: [], myVote: '', participantId: '' }
+    state = { id: '', name: '', participants: [], myVote: '' }
 
     constructor(props) {
         super(props)
+        this.state.participantId = this.props.participantId
         this.state.internalId = setInterval(() => this.refreshRoom(), 2000 + Math.ceil(1000 * Math.random()))
         this.refreshRoom()
     }
@@ -18,8 +19,11 @@ class Room extends React.Component {
     static get propTypes() {
         return {
             roomId: PropTypes.string,
+            participantId: PropTypes.string,
             password: PropTypes.string,
-            isAdmin: PropTypes.bool
+            isAdmin: PropTypes.bool,
+            onJoin: PropTypes.func,
+            onLeave: PropTypes.func
         };
     }
 
@@ -31,12 +35,13 @@ class Room extends React.Component {
                 this.setState(data)
         })
         if(this.state.participantId)
-            getParticipant(this.props.roomId, this.state.participantId).catch(() => this.setState({participantId: '', myVote: ''}))
+            getParticipant(this.props.roomId, this.state.participantId).catch(() => {this.setState({participantId: '', myVote: ''}); this.props.onJoin('')})
     }
 
     onJoin = (participantId) => {
         this.setState({participantId})
         this.refreshRoom()
+        this.props.onJoin(participantId)
     }
 
     onVote = (updatedRoomData, myVote) => {
@@ -51,12 +56,18 @@ class Room extends React.Component {
         this.setState(Object.assign({ myVote: '', participants: [] }, updatedRoomData))
     }
 
+    onLeave = () => {
+        if(confirm("Are you sure you want to leave the room?"))
+            this.props.onLeave();
+    }
+
     render() {
         let page = [
             (
                 <div key="room-header" className="container-fluid">
                     <div className="row">
-                        <div className="col-md-12"><h1>{this.state.name} <small><a href={'/join/' + this.state.id}>Link to Join</a></small></h1></div>
+                        <div className="col-md-10"><h1>{this.state.name} <small><a href={'/join/' + this.state.id}>Link to Join</a></small></h1></div>
+                        <div className="col-md-2 text-right"><br/><button type="button" className="btn btn-danger" onClick={this.onLeave}>Leave room</button></div>
                     </div>
                 </div>
             ),
