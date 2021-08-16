@@ -6,13 +6,15 @@ class VotesGraph extends React.Component {
 
     static defaultProps = {
         votes: {},
+        voteBitmap: {},
         participants: []
     }
 
     static get propTypes() {
         return {
             participants: PropTypes.array,
-            votes: PropTypes.object
+            votes: PropTypes.object,
+            voteBitmap: PropTypes.object
         };
     }
     
@@ -28,6 +30,13 @@ class VotesGraph extends React.Component {
                     </div>
                 </td>
             </tr>
+        )
+        const participants = this.props.participants.map((p, i) => 
+            {
+                if(this.props.voteBitmap[p.name])
+                    return <span key={p.name + i}>{p.name}😇{i < this.props.participants.length - 1 ? ', ': ''}</span>
+                return <span key={p.name + i}>{p.name}🤔{i < this.props.participants.length - 1 ? ', ': ''}</span>
+            }
         )
         return (
             <div className="container-fluid">
@@ -45,7 +54,7 @@ class VotesGraph extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <blockquote className="blockquote-reverse"><b>Participants</b><br/>{this.props.participants.map(p => p.name).join(', ')}</blockquote>
+                        <blockquote className="blockquote-reverse"><b>Participants</b><br/>{participants}</blockquote>
                     </div>
                 </div>
             </div>

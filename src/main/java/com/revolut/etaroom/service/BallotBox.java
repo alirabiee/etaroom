@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.revolut.etaroom.service.BallotBox.Mode.CONCLUDED;
 import static com.revolut.etaroom.service.BallotBox.Mode.VOTING;
@@ -27,6 +28,11 @@ public class BallotBox {
     @JsonProperty
     public Map<Participant, Vote> getVoteMap() {
         return mode == VOTING ? emptyMap() : voteMap;
+    }
+
+    @JsonProperty
+    public Map<Participant, Boolean> getVoteBitmap() {
+        return voteMap.keySet().stream().map(participant -> new Object[]{participant, true}).collect(Collectors.toMap(a -> (Participant) a[0], a -> (Boolean) a[1]));
     }
 
     void conclude() {

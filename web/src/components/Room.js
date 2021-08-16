@@ -71,7 +71,7 @@ class Room extends React.Component {
                     </div>
                 </div>
             ),
-            (<VotesGraph key="graph" participants={this.state.participants} votes={this.state.ballotBox?.votes} />)
+            (<VotesGraph key="graph" participants={this.state.participants} votes={this.state.ballotBox?.votes} voteBitmap={this.state.ballotBox?.voteBitmap} />)
         ]
         if (this.state.ballotBox?.mode === 'VOTING')
             page.push(<VotingForm key="voting-form" roomId={this.props.roomId} onSubmit={this.onVote} onJoin={this.onJoin} participantId={this.state.participantId} />)
