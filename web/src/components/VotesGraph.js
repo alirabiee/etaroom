@@ -34,8 +34,8 @@ class VotesGraph extends React.Component {
         const participants = this.props.participants.map((p, i) => 
             {
                 if(this.props.voteBitmap[p.name])
-                    return <span key={p.name + i}>{p.name}{String.fromCodePoint('0x1F607')}{i < this.props.participants.length - 1 ? ', ': ''}</span>
-                return <span key={p.name + i}>{p.name}{String.fromCodePoint('0x1F914')}{i < this.props.participants.length - 1 ? ', ': ''}</span>
+                    return <span key={p.name + i}>{p.name}{String.fromCodePoint('0x1F607')}{i < this.props.participants.length - 1 ? ' | ': ''}</span>
+                return <span key={p.name + i}>{p.name}{String.fromCodePoint('0x1F914')}{i < this.props.participants.length - 1 ? ' | ': ''}</span>
             }
         )
         return (
