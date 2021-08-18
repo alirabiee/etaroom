@@ -31,6 +31,7 @@ class VotingForm extends React.Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
+                            <DaysVoteButton vote="HALF" selected={this.state.myVote == 'HALF'} onClick={this.cast} />
                             <DaysVoteButton vote="ONE" selected={this.state.myVote == 'ONE'} onClick={this.cast} />
                             <DaysVoteButton vote="TWO" selected={this.state.myVote == 'TWO'} onClick={this.cast} />
                             <DaysVoteButton vote="THREE" selected={this.state.myVote == 'THREE'} onClick={this.cast} />

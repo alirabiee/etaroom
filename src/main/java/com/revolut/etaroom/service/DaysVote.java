@@ -1,6 +1,7 @@
 package com.revolut.etaroom.service;
 
 public enum DaysVote implements Vote {
+    HALF,
     ONE,
     TWO,
     THREE,

@@ -4,6 +4,7 @@ import { daysLabelMap } from './Constants'
 /* eslint-disable react/prop-types */
 export default function DaysVoteButton(props) {
     const classMap = {
+        "HALF": "btn-success",
         "ONE": "btn-success",
         "TWO": "btn-success",
         "THREE": "btn-success",

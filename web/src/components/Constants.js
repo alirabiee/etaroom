@@ -1,11 +1,12 @@
 
 const daysLabelMap = {
+    "HALF": "0.5 day",
     "ONE": "1 day",
     "TWO": "2 days",
     "THREE": "3 days",
     "FOUR": "4 days",
     "FIVE": "1 week",
-    "SEVEN": "1.4 weeks",
+    "SEVEN": "1.4 weeks (7 days)",
     "TEN": "2 weeks",
     "FIFTEEN": "3 weeks",
     "TWENTY": "4 weeks",
