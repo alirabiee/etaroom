@@ -9,24 +9,25 @@ const parseRoomId = () => hasLoggedIn() ? location.href.substr(location.href.las
 export default function App() {
   const parsedRoomId = parseRoomId()
 
-  const [appState, setAppState] = useStickyState({loggedIn: hasLoggedIn(), admin: false, roomId: parsedRoomId}, "ETARoom")
+  const [appState, setAppState] = useStickyState({loggedIn: hasLoggedIn(), admin: false, roomId: parsedRoomId, lastVoted: Date.now()}, "ETARoom")
 
-
-  const onCreateRoom = (roomId, password) => setAppState({loggedIn: true, admin: true, roomId, password})
+  const onCreateRoom = (roomId, password) => setAppState({loggedIn: true, admin: true, roomId, password, lastVoted: new Date()})
 
   const onJoinRoom = (participantId) => setAppState(Object.assign({}, appState, {participantId}))
 
+  const onVote = () => setAppState(Object.assign({}, appState, {lastVoted: new Date()}))
+
   const onLeaveRoom = () => {setAppState({}); window.location.href = '/'}
 
-  if(parsedRoomId && appState.roomId && appState.roomId != parsedRoomId) {
-    alert('You have already joined another room. Please leave that first before joining a new room.')
-    window.location.href = '/'
+  if((parsedRoomId && appState.roomId && appState.roomId != parsedRoomId) || (Date.now() - appState.lastVoted > 12 * 3600000)) {
+    setAppState({})
+    window.location.reload()
   }
 
   let page = []
 
   if(appState.loggedIn)
-    page.push(<Room key="room" roomId={appState.roomId} participantId={appState.participantId} isAdmin={appState.admin} password={appState.password} onJoin={onJoinRoom} onLeave={onLeaveRoom} />)
+    page.push(<Room key="room" roomId={appState.roomId} participantId={appState.participantId} isAdmin={appState.admin} password={appState.password} onJoin={onJoinRoom} onLeave={onLeaveRoom} onVote={onVote} />)
   else
     page.push(<CreateRoomForm key="room-creation-form" onSubmit={onCreateRoom} />)
 

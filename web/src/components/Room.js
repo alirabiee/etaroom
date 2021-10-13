@@ -23,7 +23,8 @@ class Room extends React.Component {
             password: PropTypes.string,
             isAdmin: PropTypes.bool,
             onJoin: PropTypes.func,
-            onLeave: PropTypes.func
+            onLeave: PropTypes.func,
+            onVote: PropTypes.func
         };
     }
 
@@ -33,7 +34,7 @@ class Room extends React.Component {
                 this.setState(Object.assign({ myVote: '', participants: [] }, data))
             else
                 this.setState(data)
-        })
+        }).catch(() => { this.onLeave(null, 'Looks like the room does not exist anymore, would you like to leave?') })
         if(this.state.participantId)
             getParticipant(this.props.roomId, this.state.participantId).catch(() => {this.setState({participantId: '', myVote: ''}); this.props.onJoin('')})
     }
@@ -46,6 +47,7 @@ class Room extends React.Component {
 
     onVote = (updatedRoomData, myVote) => {
         this.setState(Object.assign({ myVote }, updatedRoomData))
+        this.props.onVote()
     }
 
     onConclude = (updatedRoomData) => {
@@ -56,8 +58,8 @@ class Room extends React.Component {
         this.setState(Object.assign({ myVote: '', participants: [] }, updatedRoomData))
     }
 
-    onLeave = () => {
-        if(confirm("Are you sure you want to leave the room?"))
+    onLeave = (event, msg) => {
+        if(confirm(msg || "Are you sure you want to leave the room?"))
             this.props.onLeave();
     }
 
