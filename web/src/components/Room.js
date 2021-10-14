@@ -12,7 +12,7 @@ class Room extends React.Component {
     constructor(props) {
         super(props)
         this.state.participantId = this.props.participantId
-        this.state.internalId = setInterval(() => this.refreshRoom(), 2000 + Math.ceil(1000 * Math.random()))
+        this.state.intervalId = setInterval(() => this.refreshRoom(), 2000 + Math.ceil(1000 * Math.random()))
         this.refreshRoom()
     }
 
@@ -34,7 +34,7 @@ class Room extends React.Component {
                 this.setState(Object.assign({ myVote: '', participants: [] }, data))
             else
                 this.setState(data)
-        }).catch(() => { this.onLeave(null, 'Looks like the room does not exist anymore, would you like to leave?') })
+        }).catch(() => { clearInterval(this.state.intervalId); this.onLeave(null, 'Looks like the room does not exist anymore, would you like to leave?') })
         if(this.state.participantId)
             getParticipant(this.props.roomId, this.state.participantId).catch(() => {this.setState({participantId: '', myVote: ''}); this.props.onJoin('')})
     }
